@@ -1,0 +1,9 @@
+# Code analysis
+flake8
+flake8-docstrings
+flake8-polyfill
+pylint
+black
+
+# Database
+mysql-connector-python
