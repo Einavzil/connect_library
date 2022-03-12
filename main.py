@@ -13,7 +13,7 @@ INSERT and DELETE statements in MySQL -------------------------------"""
 
 dsn = {
 "user": "maria",
-"password": "P@ssw0rd",
+"password": "password",
 "host": "127.0.0.1",
 "port": "3306",
 "database": "library",
@@ -48,7 +48,7 @@ def select1():
             ;
             """
 
-        print(f"SQL statement: \n{sql}\n")
+        print(f"\nSQL statement: \n{sql}\n")
 
         cursor.execute(sql)
 
@@ -81,7 +81,7 @@ def select2():
             ;
         """
 
-        print(f"SQL statement: \n{sql}\n")
+        print(f"\nSQL statement: \n{sql}\n")
         bookname = input("Keyword (press 'enter' for all) -->  ")
         arg = (f"%{bookname}%",)
 
@@ -113,7 +113,7 @@ def select3():
             WHERE author.lastname LIKE ? AND author.firstname LIKE ?
             ;
         """
-        print(f"SQL statement: \n{sql}\n")
+        print(f"\nSQL statement: \n{sql}\n")
         author_first = input("Enter first name --> ")
         author_last = input("Enter last name --> ")
         args = (f"%{author_last}%", f"%{author_first}%")
@@ -138,7 +138,7 @@ def insert():
         VALUES (? , ? , ? , ? , ?)
         ;
         """
-        print(f"SQL statement: \n{sql}\n")
+        print(f"\nSQL statement: \n{sql}\n")
 
         member_id = input("Member ID -->  ")
         room_number = input("Room number -->  ")
@@ -186,7 +186,7 @@ def update():
         FROM borrow
         ;
         """
-        print(f"SQL SELECT statement: \n{sql_select}\n")
+        print(f"\nSQL SELECT statement: \n{sql_select}\n")
 
         cursor.execute(sql_select)
         result = cursor.fetchall()
@@ -228,7 +228,7 @@ def delete():
         WHERE id = ?
         ;
         """
-        print(f"SQL statement: \n{sql}\n")
+        print(f"\nSQL statement: \n{sql}\n")
 
         member_id = input("Enter a member ID to delete -->  ")
         args = (member_id,)
@@ -279,7 +279,6 @@ def main():
             while True:
                 print(menu_select)
                 choice_select = input("Choice ->  ")
-                print(type(choice_select))
                 if (choice_select == '1') or (choice_select == '2') or (choice_select == '3'):
                     if choice_select == '1':
                         """Calling select1 function to execute option 1."""
