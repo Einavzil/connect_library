@@ -27,6 +27,7 @@ try:
 except Exception as err:
     print(err)
 
+
 def select1():
     """SELECT all borrows that are late to return."""
     try:
@@ -60,36 +61,40 @@ def select1():
     except Exception as err:
         print(err)
 
+
 def select2():
     """SELECT if a book is available (or more than one)."""
     try:
         cursor = conn.cursor(prepared=True)
-        sql =  """
+        sql = """
             SELECT book.id AS 'Book ID',
-            book.name AS 'Name',
-            book.genre AS 'Book genre'
+                book.name AS 'Name',
+                book.genre AS 'Book genre'
             FROM book
-            LEFT JOIN (SELECT MAX(borrow_id) AS last_borrow_id, bookid FROM borrow GROUP BY bookid) AS lastborrows
-            ON lastborrows.bookid = book.id
+            LEFT JOIN (SELECT MAX(borrow_id) AS last_borrow_id,
+                bookid FROM borrow GROUP BY bookid) AS lastborrows
+                ON lastborrows.bookid = book.id
             LEFT JOIN borrow
-            ON borrow.borrow_id = lastborrows.last_borrow_id
-            WHERE (book.id NOT IN (SELECT bookid FROM borrow) OR borrow.returneddate IS NOT NULL) AND book.name LIKE ?
+                ON borrow.borrow_id = lastborrows.last_borrow_id
+            WHERE (book.id NOT IN (SELECT bookid FROM borrow) OR
+                borrow.returneddate IS NOT NULL) AND book.name LIKE ?
             ;
         """
-        
+
         print(f"SQL statement: \n{sql}\n")
         bookname = input("Keyword (press 'enter' for all) -->  ")
         arg = (f"%{bookname}%",)
-        
+
         cursor.execute(sql, arg)
         result = cursor.fetchall()
-        
+
         print("\n{0:<10} | {1:<45} | {2:<20}".format(*cursor.column_names))
         print("-" * 85)
         for row in result:
             print(f"{row[0]:<10} | {str(row[1]):<45} | {str(row[2]):<20}")
     except Exception as err:
         print(err)
+
 
 def select3():
     """SELECT all books written by an author."""
@@ -112,7 +117,7 @@ def select3():
         author_first = input("Enter first name --> ")
         author_last = input("Enter last name --> ")
         args = (f"%{author_last}%", f"%{author_first}%")
-        
+
         cursor.execute(sql, args)
         result = cursor.fetchall()
 
@@ -121,6 +126,7 @@ def select3():
             print(f"{row[0]:<42} | {str(row[1]):<15}")
     except Exception as err:
         print(err)
+
 
 def insert():
     """INSERT new study room reservation."""
@@ -141,7 +147,7 @@ def insert():
         ending = input("Ending time (HH) -->  ")
 
         date_format = (f"{date[2]}-{date[1]}-{date[0]}")
-        args = (member_id , room_number, date_format, f"{starting}:00:00", f"{ending}:00:00")
+        args = (member_id, room_number, date_format, f"{starting}:00:00", f"{ending}:00:00")
 
         cursor.execute(sql, args)
         print(f"\n{cursor.rowcount} rows affected.")
@@ -163,13 +169,16 @@ def insert():
                   f"| {str(result[4]):<12}| {str(result[5]):<12}")
     except Exception as err:
         print(err)
-        
-def update():
-    try:
-        """UPDATE borrow table after a book is returned.
 
-        First show the borrow table before update,
-        Then prompt the user for a borrow to update."""
+
+def update():
+    """
+    UPDATE borrow table after a book is returned.
+
+    First show the borrow table before update,
+    Then prompt the user for a borrow to update.
+    """
+    try:
         cursor = conn.cursor(prepared=True)
 
         sql_select = """
@@ -184,8 +193,8 @@ def update():
 
         print("\n{0:<10} | {1:<10} | {2:<10} | {3:<12} | {4:<10} | {5:<8} | {6:<10}".format(*cursor.column_names) + "\n" + "-" * 120)
         for row in result:
-            print(f"{str(row[0]):<10} | {str(row[1]):<10} | {str(row[2]):<10} | {str(row[3]):<12} | "
-                    + f"{str(row[4]):<10} | {str(row[5]):<8} | {str(row[6]):<10}")
+            print(f"{str(row[0]):<10} | {str(row[1]):<10} | {str(row[2]):<10}" +
+                  f" | {str(row[3]):<12} | {str(row[4]):<10} | {str(row[5]):<8} | {str(row[6]):<10}")
 
         cursor = conn.cursor(prepared=True)
 
@@ -208,7 +217,9 @@ def update():
     except Exception as err:
         print(err)
 
+
 def delete():
+    """DELETE a member from the member table (and all the borrow records)."""
     try:
         cursor = conn.cursor(prepared=True)
 
@@ -236,7 +247,9 @@ def delete():
     except Exception as err:
         print(err)
 
+
 def main():
+    """Main function to print the menues and control the user's choices."""
     print(__doc__)
 
     menu = """
@@ -304,6 +317,7 @@ def main():
             keep_going = False
         else:
             print("Please choose one of the options.")
+
 
 if __name__ == "__main__":
     main()
