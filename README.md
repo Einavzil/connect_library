@@ -1,4 +1,4 @@
-# connect_library
+# Library Database
 A python program that connects to the library database. 
 
 To run the program, you should run it through the command line or IDE.
