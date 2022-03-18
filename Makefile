@@ -1,28 +1,13 @@
 #!/usr/bin/env make
 
 # Change this to be your variant of the python command
-PYTHON ?= python # python3 py
+#PYTHON = python3
+PYTHON ?= python
+#PYTHON = py
 
-# Print out colored action message
-MESSAGE = printf "\033[32;01m---> $(1)\033[0m\n"
-
-# To make targets in each directory under the src/
-define FOREACH
-    for DIR in src/*; do \
-        $(MAKE) -C $$DIR $(1); \
-    done
-endef
+.PHONY: pydoc
 
 all:
-
-
-# ---------------------------------------------------------
-# Setup a venv and install packages.
-#
-version:
-	@printf "Currently using executable: $(PYTHON)\n"
-	which $(PYTHON)
-	$(PYTHON) --version
 
 venv:
 	[ -d .venv ] || $(PYTHON) -m venv .venv
@@ -39,30 +24,23 @@ install:
 installed:
 	$(PYTHON) -m pip list
 
-
-# ---------------------------------------------------------
-# Cleanup generated and installed files.
-#
 clean:
+	rm -f .coverage *.pyc
 	rm -rf __pycache__
+	rm -rf htmlcov
 
-clean-src:
-	$(call FOREACH,clean)
+clean-doc:
+	rm -rf doc
 
-clean-all: clean clean-src
+clean-all: clean clean-doc
 	rm -rf .venv
 
-
-# ---------------------------------------------------------
-# Test all the code at once.
-#
 pylint:
-	$(call FOREACH,pylint)
+	-pylint *.py
 
 flake8:
-	$(call FOREACH,flake8)
+	-flake8 main.py
 
 lint: flake8 pylint
 
-test:
-	$(call FOREACH,test)
+test: lint

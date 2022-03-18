@@ -1,5 +1,6 @@
 """
- Welcome to MySQL program that connects to the library database!
+Welcome to MySQL program that connects to the library database!
+
 ------------------------------------------------------------------
 """
 
@@ -9,15 +10,15 @@ import mysql.connector
 INSERT and DELETE statements in MySQL -------------------------------"""
 
 
-"""Connect to the database when running the program"""    
+"""Connect to the database when running the program"""
 
 dsn = {
-"user": "maria",
-"password": "password",
-"host": "127.0.0.1",
-"port": "3306",
-"database": "library",
-"raise_on_warnings": True,
+    "user": "maria",
+    "password": "password",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "database": "library",
+    "raise_on_warnings": True,
 }
 
 try:
@@ -100,7 +101,7 @@ def select3():
     """SELECT all books written by an author."""
     try:
         cursor = conn.cursor(prepared=True)
-        
+
         sql = """
             SELECT
                 DISTINCT name AS 'Book Name',
@@ -165,7 +166,7 @@ def insert():
             result = cursor.fetchone()
 
             print("\n{0:<5} | {1:<10} | {2:<10} | {3:<12} | {4:<12} | {5:<12}".format(*cursor.column_names) + "\n" + "-" * 65)
-            print(f"{str(result[0]):<5} | {str(result[1]):<10} | {str(result[2]):<10} | {str(result[3]):<12}"+
+            print(f"{str(result[0]):<5} | {str(result[1]):<10} | {str(result[2]):<10} | {str(result[3]):<12}" +
                   f"| {str(result[4]):<12}| {str(result[5]):<12}")
     except Exception as err:
         print(err)
@@ -275,7 +276,7 @@ def main():
         choice = input("Choice ->  ")
         if choice == '1':
             """SELECT"""
-            """Print select menu and let the user choose which select to show."""              
+            """Print select menu and let the user choose which select to show."""
             while True:
                 print(menu_select)
                 choice_select = input("Choice ->  ")
